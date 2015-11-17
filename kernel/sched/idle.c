@@ -14,6 +14,7 @@
 #include <trace/events/power.h>
 
 #include "sched.h"
+#include <linux/timekeeping.h>
 
 /**
  * sched_idle_set_state - Record idle state for the current CPU.
