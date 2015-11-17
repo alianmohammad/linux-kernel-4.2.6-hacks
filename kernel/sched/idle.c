@@ -92,6 +92,7 @@ void default_idle_call(void)
 static int call_cpuidle(struct cpuidle_driver *drv, struct cpuidle_device *dev,
 		      int next_state)
 {
+    int ret_val;
 	/* Fall back to the default arch idle method on errors. */
 	if (next_state < 0) {
 		default_idle_call();
@@ -113,7 +114,10 @@ static int call_cpuidle(struct cpuidle_driver *drv, struct cpuidle_device *dev,
 	 * This function will block until an interrupt occurs and will take
 	 * care of re-enabling the local interrupts
 	 */
-	return cpuidle_enter(drv, dev, next_state);
+    printk(KERN_DEFAULT "enter_sleep %llu %d\n", ktime_get(), smp_processor_id());
+    ret_val = cpuidle_enter(drv, dev, next_state);
+    printk(KERN_DEFAULT "exit_sleep %llu %d %d\n", ktime_get(), smp_processor_id(), entered_state);
+	return ret_val;
 }
 
 /**

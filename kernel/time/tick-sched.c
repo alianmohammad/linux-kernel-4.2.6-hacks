@@ -677,6 +677,7 @@ static ktime_t tick_nohz_stop_sched_tick(struct tick_sched *ts,
 	 * the scheduler tick in nohz_restart_sched_tick.
 	 */
 	if (!ts->tick_stopped) {
+        printk(KERN_DEFAULT "enter_idle %llu %d\n", now, cpu);
 		nohz_balance_enter_idle(cpu);
 		calc_load_enter_idle();
 
@@ -928,6 +929,7 @@ void tick_nohz_idle_exit(void)
 
 	if (ts->tick_stopped) {
 		tick_nohz_restart_sched_tick(ts, now);
+        printk(KERN_DEFAULT "exit_idle %llu %d\n", now, smp_processor_id());
 		tick_nohz_account_idle_ticks(ts);
 	}
 
