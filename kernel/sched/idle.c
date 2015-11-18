@@ -117,7 +117,7 @@ static int call_cpuidle(struct cpuidle_driver *drv, struct cpuidle_device *dev,
 	 */
     printk(KERN_DEFAULT "enter_sleep %llu %d\n", ktime_get(), smp_processor_id());
     ret_val = cpuidle_enter(drv, dev, next_state);
-    printk(KERN_DEFAULT "exit_sleep %llu %d %d\n", ktime_get(), smp_processor_id(), entered_state);
+    printk(KERN_DEFAULT "exit_sleep %llu %d %d\n", ktime_get(), smp_processor_id(), ret_val);
 	return ret_val;
 }
 

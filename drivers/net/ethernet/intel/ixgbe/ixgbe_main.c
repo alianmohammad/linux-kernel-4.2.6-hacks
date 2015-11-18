@@ -51,6 +51,7 @@
 #include <linux/prefetch.h>
 #include <scsi/fc/fc_fcoe.h>
 #include <net/vxlan.h>
+#include <linux/timekeeping.h>
 
 #ifdef CONFIG_OF
 #include <linux/of_net.h>
@@ -2017,6 +2018,7 @@ static int ixgbe_clean_rx_irq(struct ixgbe_q_vector *q_vector,
 #endif /* IXGBE_FCOE */
 	u16 cleaned_count = ixgbe_desc_unused(rx_ring);
 
+    ktime_t ts0 = ktime_get();
 	while (likely(total_rx_packets < budget)) {
 		union ixgbe_adv_rx_desc *rx_desc;
 		struct sk_buff *skb;
@@ -2093,6 +2095,7 @@ static int ixgbe_clean_rx_irq(struct ixgbe_q_vector *q_vector,
 		total_rx_packets++;
 	}
 
+    printk(KERN_DEFAULT "packet_received %llu %llu %u %u %d\n", ts0, ktime_get(), total_rx_bytes, total_rx_packets, smp_processor_id());
 	u64_stats_update_begin(&rx_ring->syncp);
 	rx_ring->stats.packets += total_rx_packets;
 	rx_ring->stats.bytes += total_rx_bytes;
